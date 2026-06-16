@@ -1,27 +1,28 @@
-const mobileToggle = document.querySelector('.mobile-toggle');
-const sidenav = document.querySelector('.sidenav');
+const navToggle = document.querySelector('.nav-toggle');
+const navMenu = document.querySelector('.nav-menu');
+const navLinks = document.querySelectorAll('.nav-link');
 
-if (mobileToggle) {
-    mobileToggle.addEventListener('click', () => {
-        mobileToggle.classList.toggle('active');
-        sidenav.classList.toggle('active');
+if (navToggle) {
+    navToggle.addEventListener('click', () => {
+        navToggle.classList.toggle('active');
+        navMenu.classList.toggle('active');
     });
 }
 
-const navDots = document.querySelectorAll('.nav-dot');
+navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        if (href.startsWith('#')) {
+            e.preventDefault();
+            const targetSection = document.querySelector(href);
 
-navDots.forEach(dot => {
-    dot.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetId = dot.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth' });
 
-        if (targetSection) {
-            targetSection.scrollIntoView({ behavior: 'smooth' });
-
-            if (sidenav.classList.contains('active')) {
-                sidenav.classList.remove('active');
-                mobileToggle.classList.remove('active');
+                if (navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    navToggle.classList.remove('active');
+                }
             }
         }
     });
@@ -38,10 +39,10 @@ function updateActiveNav() {
         const sectionId = section.getAttribute('id');
 
         if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
-            navDots.forEach(dot => {
-                dot.classList.remove('active');
-                if (dot.getAttribute('href') === `#${sectionId}`) {
-                    dot.classList.add('active');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${sectionId}`) {
+                    link.classList.add('active');
                 }
             });
         }
@@ -51,10 +52,15 @@ function updateActiveNav() {
 window.addEventListener('scroll', updateActiveNav);
 updateActiveNav();
 
-// Typing text effect variables properly declared
+// Typing text effect aligned with ML/AI role
 const typingText = document.querySelector('.typing-text');
 if (typingText) {
-    const texts = ['AI & Data Science Student', 'Machine Learning Enthusiast', 'Data Analyst', 'Web Developer', 'Java Developer'];
+    const texts = [
+        'AI & Data Science Student',
+        'Machine Learning Enthusiast',
+        'Data Analyst',
+        'Web Developer'
+    ];
     let textIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
@@ -71,23 +77,23 @@ if (typingText) {
         }
 
         if (!isDeleting && charIndex === currentText.length) {
-            setTimeout(() => isDeleting = true, 2000);
+            setTimeout(() => isDeleting = true, 2500);
         } else if (isDeleting && charIndex === 0) {
             isDeleting = false;
             textIndex = (textIndex + 1) % texts.length;
         }
 
-        const speed = isDeleting ? 50 : 100;
+        const speed = isDeleting ? 40 : 80;
         setTimeout(type, speed);
     }
 
     setTimeout(type, 1000);
 }
 
-// Fade in animations for sections and items on scroll
+// Fade-in scroll animations
 const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
+    threshold: 0.05,
+    rootMargin: '0px 0px -50px 0px'
 };
 
 const observer = new IntersectionObserver((entries) => {
@@ -100,8 +106,8 @@ const observer = new IntersectionObserver((entries) => {
 
 sections.forEach(section => observer.observe(section));
 
-const workItems = document.querySelectorAll('.work-item');
-workItems.forEach(item => observer.observe(item));
+const projectCards = document.querySelectorAll('.project-card');
+projectCards.forEach(card => observer.observe(card));
 
 const contactForm = document.getElementById('contact-form');
 
@@ -122,15 +128,15 @@ if (contactForm) {
     });
 }
 
-// Interactive moving background shapes
+// Moving background shapes (subtle parallax)
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
     const shapes = document.querySelectorAll('.shape');
 
     shapes.forEach((shape, index) => {
-        const speed = 0.5 + (index * 0.2);
+        const speed = 0.2 + (index * 0.1);
         shape.style.transform = `translateY(${scrolled * speed}px)`;
     });
 });
 
-console.log('🚀 Portfolio loaded successfully!');
+console.log('🚀 Professional Portfolio loaded successfully!');
